@@ -1,13 +1,11 @@
+import { fetchCharacterById } from "./api.js";
+
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
 
 const loadSingleCharacter = async () => {
   try {
-    const response = await fetch(
-      `https://rickandmortyapi.com/api/character/${id}`,
-    );
-
-    const character = await response.json();
+    const character = await fetchCharacterById(id);
 
     document.getElementById("char-name").textContent = character.name;
     document.getElementById("char-image").src = character.image;

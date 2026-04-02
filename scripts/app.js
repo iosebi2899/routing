@@ -1,3 +1,6 @@
+import { fetchCharacters } from "./api.js";
+import { renderCharacters } from "./ui.js";
+
 const container = document.getElementById("character-list");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
@@ -11,44 +14,12 @@ let currentSearch = "";
 
 const loadCharacters = async () => {
   try {
-    let url = `https://rickandmortyapi.com/api/character?page=${currentPage}`;
-    if (currentSearch) {
-      url += `&name=${encodeURIComponent(currentSearch)}`;
-    }
+    const data = await fetchCharacters(currentPage, currentSearch);
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      container.innerHTML = "<p>No characters found.</p>";
-      totalPages = 1;
-      currentPage = 1;
-      updatePagination();
-      return;
-    }
-
-    const data = await response.json();
     totalPages = data.info.pages;
     const characters = data.results;
 
-    container.innerHTML = "";
-
-    characters.forEach((character) => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-
-      card.innerHTML = `
-        <img src="${character.image}" alt="#">
-        <h3>${character.name}</h3>
-        <button id="${character.id}">View Details</button>
-    `;
-      container.appendChild(card);
-
-      const button = document.getElementById(character.id);
-
-      button.addEventListener("click", () => {
-        window.location.href = `details.html?id=${character.id}`;
-      });
-    });
+    renderCharacters(container, characters);
 
     updatePagination();
   } catch (error) {
@@ -69,10 +40,35 @@ searchBtn.addEventListener("click", () => {
 });
 
 searchInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    searchBtn.click();
+  if (e.target.value === "Enter") {
+    currentSearch = searchInput.value.trim();
+    currentPage = 1;
+    loadCharacters();
   }
 });
+
+const delayedTimeout = setTimeout(() => {
+  console.log("Hello");
+}, 1000);
+
+clearTimeout(delayedTimeout);
+
+const debounce = (fn, delay = 300) => {
+  let timerId;
+  return (...args) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => fn(...args), delay);
+  };
+};
+
+searchInput.addEventListener(
+  "input",
+  debounce(() => {
+    currentSearch = searchInput.value.trim();
+    currentPage = 1;
+    loadCharacters();
+  }),
+);
 
 prevBtn.addEventListener("click", () => {
   if (currentPage > 1) {

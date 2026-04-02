@@ -15,6 +15,72 @@ h1 {
   color: #97ce4c;
 }
 
+/* search bar */
+#search-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+#search-input {
+  padding: 10px 16px;
+  border: 2px solid #3c6e71;
+  border-radius: 6px;
+  background: #16213e;
+  color: #fff;
+  font-size: 16px;
+  width: 280px;
+  outline: none;
+}
+#search-input:focus {
+  border-color: #97ce4c;
+}
+#search-btn {
+  padding: 10px 20px;
+  background: #97ce4c;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+#search-btn:hover {
+  background: #7ab838;
+}
+
+/* pagination */
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+#pagination button {
+  padding: 8px 18px;
+  background: #97ce4c;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+#pagination button:hover:not(:disabled) {
+  background: #7ab838;
+}
+#pagination button:disabled {
+  background: #3c6e71;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+#page-info {
+  font-size: 16px;
+  color: #97ce4c;
+  font-weight: bold;
+}
+
 /* index.html */
 #character-list {
   display: flex;
